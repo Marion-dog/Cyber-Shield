@@ -1,0 +1,1440 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>КиберЩит ULTIMATE</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* Главная страница */
+        #main-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .hero {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: glow 2s ease-in-out infinite alternate;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #667eea; }
+            to { text-shadow: 0 0 30px #764ba2, 0 0 40px #764ba2; }
+        }
+
+        .hero p {
+            font-size: 1.5em;
+            margin-bottom: 40px;
+            color: #ccd6dd;
+            max-width: 600px;
+        }
+
+        .cta-button {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 50px;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Features Sections */
+        .features-section {
+            padding: 100px 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            color: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .feature-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            transition: all 0.3s;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 20px;
+        }
+
+        .feature-title {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: white;
+        }
+
+        .feature-description {
+            color: #ccd6dd;
+            margin-bottom: 20px;
+        }
+
+        /* Отдельные вкладки */
+        .tab-page {
+            display: none;
+            min-height: 100vh;
+            padding: 80px 20px 20px;
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        .tab-page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            z-index: 1000;
+            font-size: 1em;
+        }
+
+        .back-button:hover {
+            background: rgba(255,255,255,0.2);
+        }
+
+        /* Стили для контента вкладок */
+        .tab-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .function-container {
+            background: rgba(255,255,255,0.05);
+            padding: 40px;
+            border-radius: 20px;
+            margin-top: 30px;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .input-group {
+            margin-bottom: 25px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 15px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 10px;
+            color: white;
+            font-size: 1em;
+            margin-top: 8px;
+        }
+
+        .result-box {
+            background: rgba(0,0,0,0.3);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 25px;
+            font-family: monospace;
+            word-break: break-all;
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .safe { border-left: 4px solid #00d26a; }
+        .warning { border-left: 4px solid #ffaa00; }
+        .danger { border-left: 4px solid #ff3860; }
+
+        /* Игра */
+        .game-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 30px 0;
+            padding: 25px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 15px;
+        }
+
+        .attack-button {
+            background: rgba(255,56,96,0.3);
+            border: 2px solid #ff3860;
+            color: white;
+            padding: 20px 30px;
+            margin: 10px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .attack-button:hover {
+            background: rgba(255,56,96,0.5);
+            transform: scale(1.02);
+        }
+
+        /* AI Assistant */
+        .chat-container {
+            height: 400px;
+            overflow-y: auto;
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            background: rgba(0,0,0,0.2);
+        }
+
+        .message {
+            margin: 15px 0;
+            padding: 15px;
+            border-radius: 15px;
+            max-width: 80%;
+        }
+
+        .user-message {
+            background: rgba(102,126,234,0.3);
+            margin-left: auto;
+        }
+
+        .bot-message {
+            background: rgba(255,255,255,0.1);
+            margin-right: auto;
+        }
+
+        /* Новости */
+        .news-item {
+            background: rgba(255,255,255,0.05);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #667eea;
+        }
+
+        /* Notification */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255,255,255,0.95);
+            color: #1a1a2e;
+            padding: 15px 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            z-index: 1000;
+            transform: translateX(400px);
+            transition: transform 0.3s;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #ccd6dd;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Главная страница -->
+    <div id="main-page">
+        <section class="hero">
+            <h1>🛡️ КиберЩит</h1>
+            <p>Инновационная платформа для обучения кибербезопасности через интерактивные игры и практические инструменты</p>
+            <button class="cta-button" onclick="scrollToFeatures()">Начать использование</button>
+        </section>
+
+        <!-- Light User Features -->
+        <section class="features-section" id="features">
+            <h2 class="section-title">🔰 Light User</h2>
+            <p style="text-align: center; margin-bottom: 50px; color: #ccd6dd; font-size: 1.2em;">
+                Базовые инструменты для повседневной безопасности
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="openTab('password-tab')">
+                    <div class="feature-icon">🔐</div>
+                    <h3 class="feature-title">Генератор паролей</h3>
+                    <p class="feature-description">Создавайте сверхнадежные пароли с помощью нашего генератора</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('urlchecker-tab')">
+                    <div class="feature-icon">🔗</div>
+                    <h3 class="feature-title">Проверка ссылок</h3>
+                    <p class="feature-description">Проверяйте безопасность любых ссылок перед переходом</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('logins-tab')">
+                    <div class="feature-icon">👤</div>
+                    <h3 class="feature-title">Генератор логинов</h3>
+                    <p class="feature-description">Создавайте безопасные и анонимные имена пользователей</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('news-tab')">
+                    <div class="feature-icon">📰</div>
+                    <h3 class="feature-title">Кибер-новости</h3>
+                    <p class="feature-description">Будьте в курсе последних угроз и обновлений безопасности</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('quest-tab')">
+                    <div class="feature-icon">🎯</div>
+                    <h3 class="feature-title">Обучающий квест</h3>
+                    <p class="feature-description">Пройдите интерактивный квест по основам безопасности</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('tips-tab')">
+                    <div class="feature-icon">💡</div>
+                    <h3 class="feature-title">Советы безопасности</h3>
+                    <p class="feature-description">Полезные рекомендации для защиты в цифровом мире</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Pro User Features -->
+        <section class="features-section" id="pro-user">
+            <h2 class="section-title">⚡ Pro User</h2>
+            <p style="text-align: center; margin-bottom: 50px; color: #ccd6dd; font-size: 1.2em;">
+                Продвинутые инструменты с AI и игровыми элементами
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="openTab('ai-tab')">
+                    <div class="feature-icon">🤖</div>
+                    <h3 class="feature-title">AI-Анализатор</h3>
+                    <p class="feature-description">ИИ анализирует сообщения на признаки мошенничества</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('deepfake-tab')">
+                    <div class="feature-icon">🕵️</div>
+                    <h3 class="feature-title">Детектор дипфейков</h3>
+                    <p class="feature-description">Определяйте поддельные фото и видео с помощью AI</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('game-tab')">
+                    <div class="feature-icon">🎮</div>
+                    <h3 class="feature-title">Симулятор атак</h3>
+                    <p class="feature-description">Отражайте виртуальные кибератаки в реальном времени</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('qr-tab')">
+                    <div class="feature-icon">📱</div>
+                    <h3 class="feature-title">QR-Сканер</h3>
+                    <p class="feature-description">Проверяйте безопасность QR-кодов перед сканированием</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('threatmap-tab')">
+                    <div class="feature-icon">🌍</div>
+                    <h3 class="feature-title">Карта угроз</h3>
+                    <p class="feature-description">Визуализация кибератак в реальном времени по всему миру</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('assistant-tab')">
+                    <div class="feature-icon">💬</div>
+                    <h3 class="feature-title">AI-Помощник</h3>
+                    <p class="feature-description">Персональный консультант по вопросам безопасности</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Information Section -->
+        <section class="features-section" id="information">
+            <h2 class="section-title">📊 Information</h2>
+            <p style="text-align: center; margin-bottom: 50px; color: #ccd6dd; font-size: 1.2em;">
+                Статистика и информация о проекте
+            </p>
+            
+            <div class="features-grid">
+                <div class="feature-card" onclick="openTab('stats-tab')">
+                    <div class="feature-icon">📈</div>
+                    <h3 class="feature-title">Моя статистика</h3>
+                    <p class="feature-description">Отслеживайте ваш прогресс в изучении кибербезопасности</p>
+                </div>
+
+                <div class="feature-card" onclick="openTab('about-tab')">
+                    <div class="feature-icon">ℹ️</div>
+                    <h3 class="feature-title">О проекте</h3>
+                    <p class="feature-description">Узнайте больше о создателях и целях проекта</p>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Отдельные вкладки функций -->
+    
+    <!-- Light User Tabs -->
+    <div id="password-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🔐 Генератор паролей</h1>
+            <div class="function-container">
+                <div class="input-group">
+                    <label>Выберите сложность пароля:</label>
+                    <select class="input-field" id="passwordStrength">
+                        <option value="easy">Простой (8 символов)</option>
+                        <option value="medium">Средний (12 символов)</option>
+                        <option value="strong">Сложный (16 символов)</option>
+                        <option value="max">Максимальный (20 символов)</option>
+                    </select>
+                </div>
+                <button class="cta-button" onclick="generatePassword()">Сгенерировать пароль</button>
+                <div id="passwordResult" class="result-box" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="urlchecker-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🔗 Проверка ссылок</h1>
+            <div class="function-container">
+                <div class="input-group">
+                    <label>Введите ссылку для проверки:</label>
+                    <input type="url" class="input-field" id="urlInput" placeholder="https://example.com">
+                </div>
+                <button class="cta-button" onclick="checkURL()">Проверить ссылку</button>
+                <div id="urlResult" class="result-box" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="logins-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>👤 Генератор логинов</h1>
+            <div class="function-container">
+                <div class="input-group">
+                    <label>Введите ваше имя:</label>
+                    <input type="text" class="input-field" id="userNameInput" placeholder="Иван">
+                </div>
+                <button class="cta-button" onclick="generateLogins()">Сгенерировать логины</button>
+                <div id="loginsResult" class="result-box" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="news-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>📰 Кибер-новости</h1>
+            <div class="function-container">
+                <button class="cta-button" onclick="loadNews()">🔄 Обновить новости</button>
+                <div id="newsContainer" style="margin-top: 30px;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="quest-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🎯 Обучающий квест</h1>
+            <div class="function-container">
+                <div class="game-stats">
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Уровень</div>
+                        <div id="questLevel" style="font-size: 1.5em; font-weight: bold;">1</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Очки</div>
+                        <div id="questScore" style="font-size: 1.5em; font-weight: bold;">0</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Вопрос</div>
+                        <div id="questQuestion" style="font-size: 1.5em; font-weight: bold;">1/5</div>
+                    </div>
+                </div>
+                <div id="questContent">
+                    <!-- Контент квеста будет загружен динамически -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="tips-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>💡 Советы безопасности</h1>
+            <div class="function-container">
+                <div class="news-item">
+                    <h3>🔐 Надежные пароли</h3>
+                    <p>Используйте пароли длиной не менее 12 символов с буквами, цифрами и специальными знаками</p>
+                </div>
+                <div class="news-item">
+                    <h3>🎣 Фишинг-атаки</h3>
+                    <p>Никогда не переходите по ссылкам из подозрительных писем и не вводите пароли на неизвестных сайтах</p>
+                </div>
+                <div class="news-item">
+                    <h3>📱 Обновления</h3>
+                    <p>Регулярно обновляйте операционную систему и приложения для защиты от уязвимостей</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pro User Tabs -->
+    <div id="ai-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🤖 AI-Анализатор сообщений</h1>
+            <div class="function-container">
+                <div class="input-group">
+                    <label>Введите сообщение для анализа:</label>
+                    <textarea class="input-field" id="messageInput" rows="4" placeholder="Введите подозрительное сообщение..."></textarea>
+                </div>
+                <button class="cta-button" onclick="analyzeMessage()">Проанализировать</button>
+                <div id="aiResult" class="result-box" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="deepfake-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🕵️ Детектор дипфейков</h1>
+            <div class="function-container">
+                <div class="input-group">
+                    <label>Загрузите фото для проверки:</label>
+                    <input type="file" class="input-field" id="photoInput" accept="image/*">
+                </div>
+                <button class="cta-button" onclick="checkDeepfake()">Проверить фото</button>
+                <div id="deepfakeResult" class="result-box" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="game-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🎮 Симулятор кибератак</h1>
+            <div class="function-container">
+                <div class="game-stats">
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Защита</div>
+                        <div id="firewallHealth" style="font-size: 1.5em; font-weight: bold;">100%</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Очки</div>
+                        <div id="gameScore" style="font-size: 1.5em; font-weight: bold;">0</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Волна</div>
+                        <div id="gameWave" style="font-size: 1.5em; font-weight: bold;">1</div>
+                    </div>
+                </div>
+
+                <div id="gameContent">
+                    <button class="cta-button" onclick="startGame()">Начать игру</button>
+                </div>
+
+                <div id="defenseOptions" style="display: none; margin-top: 30px;">
+                    <div id="attackDescription" class="feature-description" style="margin-bottom: 20px;"></div>
+                    <div id="defenseButtons"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="qr-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>📱 QR-Сканер</h1>
+            <div class="function-container">
+                <div class="input-group">
+                    <label>Введите содержимое QR-кода:</label>
+                    <textarea class="input-field" id="qrInput" rows="3" placeholder="Введите текст или ссылку из QR-кода..."></textarea>
+                </div>
+                <button class="cta-button" onclick="checkQR()">Проверить QR-код</button>
+                <div id="qrResult" class="result-box" style="display: none;"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="threatmap-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>🌍 Карта угроз</h1>
+            <div class="function-container">
+                <div class="game-stats">
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Активных атак</div>
+                        <div style="font-size: 1.5em; font-weight: bold;">12</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Уровень угрозы</div>
+                        <div style="font-size: 1.5em; font-weight: bold; color: #ffaa00;">Средний</div>
+                    </div>
+                </div>
+                <div style="margin-top: 30px;">
+                    <div class="news-item">
+                        <h3>🎣 Фишинг - Москва</h3>
+                        <p>Массовая рассылка поддельных писем от имени МЭШ</p>
+                    </div>
+                    <div class="news-item">
+                        <h3>🦠 Вирусы - Санкт-Петербург</h3>
+                        <p>Обнаружены новые модификации трояна EduStealer</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="assistant-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>💬 AI-Помощник</h1>
+            <div class="function-container">
+                <div class="chat-container" id="chatContainer">
+                    <div class="message bot-message">
+                        <strong>Кибер-Помощник:</strong><br>
+                        Привет! Я твой цифровой защитник. Спроси меня о паролях, фишинге, вирусах или любой другой теме кибербезопасности! 🛡️
+                    </div>
+                </div>
+                <div class="input-group">
+                    <input type="text" class="input-field" id="questionInput" placeholder="Задайте вопрос о безопасности..." 
+                           onkeypress="if(event.key === 'Enter') askAssistant()">
+                    <button class="cta-button" onclick="askAssistant()">Отправить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Information Tabs -->
+    <div id="stats-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>📊 Моя статистика</h1>
+            <div class="function-container">
+                <div class="game-stats">
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Уровень</div>
+                        <div id="userLevel" style="font-size: 2em; font-weight: bold;">1</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Опыт</div>
+                        <div id="userXP" style="font-size: 2em; font-weight: bold;">0</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 0.9em; color: #8899a6;">Действия</div>
+                        <div id="userActions" style="font-size: 2em; font-weight: bold;">0</div>
+                    </div>
+                </div>
+
+                <h3 style="margin-top: 30px;">📈 Прогресс по функциям:</h3>
+                <div style="margin-top: 20px;">
+                    <div>🔐 Паролей создано: <span id="passwordsCount">0</span></div>
+                    <div>🔗 Ссылок проверено: <span id="urlsChecked">0</span></div>
+                    <div>🤖 Сообщений проанализировано: <span id="messagesAnalyzed">0</span></div>
+                    <div>🎮 Атак отражено: <span id="attacksBlocked">0</span></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="about-tab" class="tab-page">
+        <button class="back-button" onclick="closeTab()">← Назад</button>
+        <div class="tab-content">
+            <h1>ℹ️ О проекте</h1>
+            <div class="function-container">
+                <h2>КиберЩит  ULTIMATE</h2>
+                <div class="input-group">
+                    <label>Разработчик:</label>
+                    <div class="input-field" style="background: transparent; border: none; padding: 10px 0;">Michael Bor</div>
+                </div>
+                <div class="input-group">
+                    <label>Школа:</label>
+                    <div class="input-field" style="background: transparent; border: none; padding: 10px 0;">1357</div>
+                </div>
+                <div class="input-group">
+                    <label>Класс:</label>
+                    <div class="input-field" style="background: transparent; border: none; padding: 10px 0;">10 класс</div>
+                </div>
+                <div class="input-group">
+                    <label>Год разработки:</label>
+                    <div class="input-field" style="background: transparent; border: none; padding: 10px 0;">2025</div>
+                </div>
+                
+                <h3 style="margin-top: 30px;">🎯 Цели проекта:</h3>
+                <ul style="margin-left: 20px; margin-top: 15px;">
+                    <li>Повышение цифровой грамотности школьников</li>
+                    <li>Обучение основам кибербезопасности через интерактивные методы</li>
+                    <li>Создание доступных инструментов для защиты в цифровом пространстве</li>
+                    <li>Развитие навыков безопасного поведения в интернете</li>
+                </ul>
+
+                <h3 style="margin-top: 30px;">🛠️ Технологии:</h3>
+                <p>HTML5, CSS3, JavaScript, NewsAPI, AI-алгоритмы анализа</p>
+
+                <h3 style="margin-top: 30px;">📞 Контакты:</h3>
+                <p>Для сотрудничества и вопросов: school1357@edu.moscow</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div id="notificationText"></div>
+    </div>
+
+    <script>
+        // User data and statistics
+        const userData = {
+            level: 1,
+            xp: 0,
+            actions: 0,
+            passwordsGenerated: 0,
+            urlsChecked: 0,
+            messagesAnalyzed: 0,
+            attacksBlocked: 0
+        };
+
+        // Game data
+        const gameData = {
+            score: 0,
+            firewall: 100,
+            wave: 1,
+            activeAttack: null
+        };
+
+        // Quest data - БАЗА ВОПРОСОВ ДЛЯ КВЕСТА
+        const questQuestionsPool = [
+            {
+                question: "Что такое фишинг?",
+                answers: [
+                    "Вид интернет-мошенничества",
+                    "Рыбалка в интернете", 
+                    "Новый вид спорта"
+                ],
+                correct: 0
+            },
+            {
+                question: "Какой пароль самый надежный?",
+                answers: [
+                    "123456",
+                    "qwerty12345", 
+                    "X8#kL$93@pQrT"
+                ],
+                correct: 2
+            },
+            {
+                question: "Что делать при получении подозрительного письма?",
+                answers: [
+                    "Перейти по ссылке и проверить",
+                    "Удалить письмо",
+                    "Переслать друзьям"
+                ],
+                correct: 1
+            },
+            {
+                question: "Как защититься от вирусов?",
+                answers: [
+                    "Ничего не делать",
+                    "Установить антивирус и обновлять его",
+                    "Отключить интернет"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что такое двухфакторная аутентификация?",
+                answers: [
+                    "Два пароля вместо одного",
+                    "Подтверждение входа через телефон",
+                    "Двойная проверка антивирусом"
+                ],
+                correct: 1
+            },
+            {
+                question: "Безопасно ли использовать публичный Wi-Fi?",
+                answers: [
+                    "Да, абсолютно безопасно",
+                    "Только для просмотра сайтов",
+                    "Небезопасно для важных операций"
+                ],
+                correct: 2
+            },
+            {
+                question: "Как распознать мошеннический сайт?",
+                answers: [
+                    "По красивому дизайну",
+                    "По странному домену и SSL-сертификату",
+                    "По количеству рекламы"
+                ],
+                correct: 1
+            },
+            {
+                question: "Что делать при взломе аккаунта?",
+                answers: [
+                    "Ничего не делать",
+                    "Немедленно сменить пароль",
+                    "Позвонить другу"
+                ],
+                correct: 1
+            }
+        ];
+
+        // ОПАСНЫЕ ССЫЛКИ ДЛЯ ПРОВЕРКИ
+        const dangerousDomains = [
+            'bit.ly', 'tinyurl.com', 'shorte.st', 'adf.ly', 'bc.vc', 
+            'phishing-site.com', 'malware-download.net', 'fake-login.ru',
+            'free-virus.com', 'hack-me.pl', 'steal-data.org'
+        ];
+
+        const suspiciousKeywords = [
+            'login', 'password', 'account', 'verify', 'security',
+            'update', 'confirm', 'bank', 'paypal', 'credit', 'card'
+        ];
+
+        // AI Knowledge Base
+        const SECURITY_KNOWLEDGE = {
+            "пароль": "🔐 **Создание надежного пароля:**\n• Длина 12+ символов\n• Буквы (верхний и нижний регистр)\n• Цифры и специальные знаки\n• Уникальный для каждого сайта\n• Используйте менеджер паролей",
+            
+            "фишинг": "🎣 **Защита от фишинга:**\n• Проверяйте адрес отправителя\n• Не переходите по подозрительным ссылкам\n• Официальные службы НЕ запрашивают пароли по почте\n• Внимание к орфографии и грамматике",
+            
+            "вирус": "🦠 **Защита от вирусов:**\n• Установите антивирус\n• Регулярно обновляйте программы\n• Не скачивайте файлы с сомнительных сайтов\n• Проверяйте файлы перед запуском",
+            
+            "wi-fi": "📡 **Безопасный Wi-Fi:**\n• Избегайте публичных сетей для важных операций\n• Используйте VPN для шифрования\n• Отключайте автоматическое подключение",
+            
+            "default": "🛡️ **Общие правила безопасности:**\n• Регулярно обновляйте ПО\n• Используйте двухфакторную аутентификацию\n• Будьте осторожны с личной информацией\n• Обучайтесь новым угрозам"
+        };
+
+        // Game attacks
+        const ATTACKS = [
+            {
+                name: '🎣 Фишинг-атака',
+                description: 'Вам пришло письмо от "службы поддержки МЭШ" с просьбой ввести пароль для "обновления безопасности"',
+                solutions: [
+                    { text: 'Игнорировать и удалить письмо', correct: true },
+                    { text: 'Перейти по ссылке и проверить', correct: false },
+                    { text: 'Ввести данные "для проверки"', correct: false }
+                ]
+            },
+            {
+                name: '🦠 Вирусная атака', 
+                description: 'Файл "Крутая_игра.exe" просит отключить антивирус "для корректной установки"',
+                solutions: [
+                    { text: 'Запустить файл', correct: false },
+                    { text: 'Проверить файл антивирусом', correct: true },
+                    { text: 'Отправить друзьям "для проверки"', correct: false }
+                ]
+            }
+        ];
+
+        // Navigation functions
+        function scrollToFeatures() {
+            document.getElementById('features').scrollIntoView({ 
+                behavior: 'smooth' 
+            });
+        }
+
+        function openTab(tabId) {
+            document.getElementById('main-page').style.display = 'none';
+            document.querySelectorAll('.tab-page').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById(tabId).classList.add('active');
+            
+            // Автоматически загружаем контент при открытии вкладки
+            if (tabId === 'news-tab') {
+                loadNews();
+            } else if (tabId === 'quest-tab') {
+                startNewQuest();
+            }
+        }
+
+        function closeTab() {
+            document.querySelectorAll('.tab-page').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.getElementById('main-page').style.display = 'block';
+            window.scrollTo(0, 0);
+        }
+
+        // Utility functions
+        function showNotification(text) {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = text;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+
+        function addXP(amount) {
+            userData.xp += amount;
+            userData.actions++;
+            updateStats();
+            
+            if (userData.xp >= userData.level * 100) {
+                userData.level++;
+                showNotification(`🎉 Поздравляем! Вы достигли ${userData.level} уровня!`);
+            }
+        }
+
+        function updateStats() {
+            document.getElementById('userLevel').textContent = userData.level;
+            document.getElementById('userXP').textContent = userData.xp;
+            document.getElementById('userActions').textContent = userData.actions;
+            document.getElementById('passwordsCount').textContent = userData.passwordsGenerated;
+            document.getElementById('urlsChecked').textContent = userData.urlsChecked;
+            document.getElementById('messagesAnalyzed').textContent = userData.messagesAnalyzed;
+            document.getElementById('attacksBlocked').textContent = userData.attacksBlocked;
+        }
+
+        // Light User Functions
+        function generatePassword() {
+            const strength = document.getElementById('passwordStrength').value;
+            const lengths = { easy: 8, medium: 12, strong: 16, max: 20 };
+            const length = lengths[strength];
+            
+            const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*';
+            let password = '';
+            
+            for (let i = 0; i < length; i++) {
+                password += chars[Math.floor(Math.random() * chars.length)];
+            }
+            
+            document.getElementById('passwordResult').innerHTML = `
+                <strong>Ваш новый пароль:</strong><br>
+                <div style="font-size: 1.2em; margin: 10px 0;">${password}</div>
+                <small>Скопируйте и сохраните в надежном месте!</small>
+            `;
+            document.getElementById('passwordResult').style.display = 'block';
+            
+            userData.passwordsGenerated++;
+            addXP(15);
+            showNotification('🔐 Пароль создан! +15 XP');
+        }
+
+        // РЕАЛЬНАЯ ПРОВЕРКА ССЫЛОК
+        function checkURL() {
+            const url = document.getElementById('urlInput').value.trim();
+            if (!url) {
+                showNotification('Введите ссылку для проверки');
+                return;
+            }
+            
+            let result = "";
+            let resultClass = "safe";
+            
+            // Проверка на опасные домены
+            const isDangerousDomain = dangerousDomains.some(domain => 
+                url.toLowerCase().includes(domain)
+            );
+            
+            // Проверка на подозрительные ключевые слова
+            const hasSuspiciousKeywords = suspiciousKeywords.some(keyword =>
+                url.toLowerCase().includes(keyword)
+            );
+            
+            // Проверка структуры URL
+            const hasHttp = url.startsWith('http://'); // HTTP без SSL опасен
+            const hasUnusualCharacters = /[<>{}|\\^~\[\]]/.test(url);
+            const isIPAddress = /^\d+\.\d+\.\d+\.\d+/.test(url.replace('http://', '').replace('https://', ''));
+            
+            if (isDangerousDomain) {
+                result = "🚨 ОПАСНО! Обнаружен известный вредоносный домен";
+                resultClass = "danger";
+            } else if (hasHttp) {
+                result = "⚠️ ПОДОЗРИТЕЛЬНО! Сайт использует незащищенное HTTP соединение";
+                resultClass = "warning";
+            } else if (isIPAddress) {
+                result = "⚠️ ПОДОЗРИТЕЛЬНО! Ссылка ведет на IP-адрес вместо домена";
+                resultClass = "warning";
+            } else if (hasUnusualCharacters) {
+                result = "⚠️ ПОДОЗРИТЕЛЬНО! Обнаружены необычные символы в URL";
+                resultClass = "warning";
+            } else if (hasSuspiciousKeywords && url.includes('?')) {
+                result = "⚠️ ВНИМАНИЕ! Ссылка содержит подозрительные параметры";
+                resultClass = "warning";
+            } else {
+                result = "✅ БЕЗОПАСНО! Ссылка не вызывает подозрений";
+                resultClass = "safe";
+            }
+            
+            document.getElementById('urlResult').innerHTML = `
+                <strong>Результат проверки:</strong><br>
+                ${result}<br><br>
+                <strong>Проверенная ссылка:</strong><br>
+                <code>${url}</code><br><br>
+                <strong>Анализ:</strong><br>
+                • Домены: ${isDangerousDomain ? '❌ Опасные' : '✅ Безопасные'}<br>
+                • Протокол: ${hasHttp ? '❌ HTTP' : '✅ HTTPS'}<br>
+                • Структура: ${hasUnusualCharacters ? '❌ Подозрительная' : '✅ Нормальная'}
+            `;
+            document.getElementById('urlResult').className = `result-box ${resultClass}`;
+            document.getElementById('urlResult').style.display = 'block';
+            
+            userData.urlsChecked++;
+            addXP(10);
+        }
+
+        function generateLogins() {
+            const name = document.getElementById('userNameInput').value;
+            if (!name) {
+                showNotification('Введите ваше имя');
+                return;
+            }
+            
+            const logins = [
+                `${name}${Math.floor(Math.random() * 1000)}`,
+                `secure_${name.toLowerCase()}`,
+                `${name.substring(0, 3)}_protector`,
+                `cyber_${name}_${new Date().getFullYear()}`
+            ];
+            
+            document.getElementById('loginsResult').innerHTML = `
+                <strong>Ваши безопасные логины:</strong><br><br>
+                ${logins.map(login => `<div>• ${login}</div>`).join('')}
+                <br><small>💡 Используйте разные логины для разных сайтов!</small>
+            `;
+            document.getElementById('loginsResult').style.display = 'block';
+            
+            addXP(8);
+        }
+
+        // QUEST FUNCTIONS - ОБНОВЛЯЕМЫЙ КВЕСТ
+        let currentQuest = {
+            questions: [],
+            currentQuestion: 0,
+            score: 0
+        };
+
+        function startNewQuest() {
+            // Выбираем случайные 5 вопросов из пула
+            currentQuest.questions = [...questQuestionsPool]
+                .sort(() => Math.random() - 0.5)
+                .slice(0, 5);
+            currentQuest.currentQuestion = 0;
+            currentQuest.score = 0;
+            
+            loadNextQuestion();
+        }
+
+        function loadNextQuestion() {
+            if (currentQuest.currentQuestion >= currentQuest.questions.length) {
+                endQuest();
+                return;
+            }
+            
+            const question = currentQuest.questions[currentQuest.currentQuestion];
+            
+            document.getElementById('questQuestion').textContent = 
+                `${currentQuest.currentQuestion + 1}/${currentQuest.questions.length}`;
+            document.getElementById('questScore').textContent = currentQuest.score;
+            
+            let buttonsHTML = '';
+            question.answers.forEach((answer, index) => {
+                buttonsHTML += `<button class="attack-button" onclick="answerQuest(${index})">${answer}</button>`;
+            });
+            
+            document.getElementById('questContent').innerHTML = `
+                <h3>${question.question}</h3>
+                ${buttonsHTML}
+            `;
+        }
+
+        function answerQuest(answerIndex) {
+            const question = currentQuest.questions[currentQuest.currentQuestion];
+            const isCorrect = answerIndex === question.correct;
+            
+            if (isCorrect) {
+                currentQuest.score += 100;
+                showNotification('✅ Правильно! +100 очков');
+            } else {
+                showNotification('❌ Неправильно! Попробуйте еще раз');
+            }
+            
+            currentQuest.currentQuestion++;
+            loadNextQuestion();
+        }
+
+        function endQuest() {
+            const xpEarned = Math.floor(currentQuest.score / 10);
+            addXP(xpEarned);
+            
+            const correctAnswers = currentQuest.score / 100;
+            const totalQuestions = currentQuest.questions.length;
+            
+            document.getElementById('questContent').innerHTML = `
+                <div style="text-align: center;">
+                    <h3>🎯 Квест завершен!</h3>
+                    <p><strong>Результат:</strong> ${currentQuest.score} очков</p>
+                    <p><strong>Правильных ответов:</strong> ${correctAnswers} из ${totalQuestions}</p>
+                    <p><strong>Получено опыта:</strong> ${xpEarned} XP</p>
+                    <button class="cta-button" onclick="startNewQuest()" style="margin-top: 20px;">
+                        🔄 Новый квест
+                    </button>
+                </div>
+            `;
+        }
+
+        // Pro User Functions
+        function analyzeMessage() {
+            const message = document.getElementById('messageInput').value;
+            if (!message) {
+                showNotification('Введите сообщение для анализа');
+                return;
+            }
+            
+            const scamKeywords = ['срочно', 'бесплатно', 'выиграл', 'пароль', 'деньги', 'акция', 'ограничено'];
+            const foundKeywords = scamKeywords.filter(keyword => 
+                message.toLowerCase().includes(keyword)
+            );
+            
+            let result = "✅ БЕЗОПАСНО! Сообщение не вызывает подозрений";
+            let resultClass = "safe";
+            
+            if (foundKeywords.length > 2) {
+                result = "🚨 ВЫСОКИЙ РИСК! Это похоже на мошенничество!";
+                resultClass = "danger";
+            } else if (foundKeywords.length > 0) {
+                result = "⚠️ ПОДОЗРИТЕЛЬНО! Будьте осторожны!";
+                resultClass = "warning";
+            }
+            
+            document.getElementById('aiResult').innerHTML = `
+                <strong>Результат анализа:</strong><br>
+                ${result}<br><br>
+                ${foundKeywords.length > 0 ? `<strong>Найдены подозрительные слова:</strong><br>${foundKeywords.join(', ')}` : ''}
+            `;
+            document.getElementById('aiResult').className = `result-box ${resultClass}`;
+            document.getElementById('aiResult').style.display = 'block';
+            
+            userData.messagesAnalyzed++;
+            addXP(12);
+        }
+
+        // Game Functions
+        function startGame() {
+            gameData.score = 0;
+            gameData.firewall = 100;
+            gameData.wave = 1;
+            
+            updateGameUI();
+            document.getElementById('gameContent').style.display = 'none';
+            document.getElementById('defenseOptions').style.display = 'block';
+            
+            nextAttack();
+        }
+
+        function nextAttack() {
+            if (gameData.firewall <= 0) {
+                endGame();
+                return;
+            }
+            
+            const attack = ATTACKS[Math.floor(Math.random() * ATTACKS.length)];
+            gameData.activeAttack = attack;
+            
+            document.getElementById('attackDescription').textContent = 
+                `${attack.name}: ${attack.description}`;
+            
+            let buttonsHTML = '';
+            attack.solutions.forEach((solution, index) => {
+                buttonsHTML += `
+                    <button class="attack-button" onclick="defendAttack(${index})">
+                        ${solution.text}
+                    </button>
+                `;
+            });
+            
+            document.getElementById('defenseButtons').innerHTML = buttonsHTML;
+        }
+
+        function defendAttack(choiceIndex) {
+            const solution = gameData.activeAttack.solutions[choiceIndex];
+            
+            if (solution.correct) {
+                gameData.score += 100;
+                showNotification(`✅ Правильно! +100 очков!`);
+                userData.attacksBlocked++;
+            } else {
+                gameData.firewall -= 25;
+                showNotification(`❌ Ошибка! -25% защиты!`);
+            }
+            
+            if (gameData.firewall <= 0) {
+                endGame();
+            } else {
+                gameData.wave++;
+                updateGameUI();
+                setTimeout(nextAttack, 1500);
+            }
+        }
+
+        function updateGameUI() {
+            document.getElementById('firewallHealth').textContent = `${gameData.firewall}%`;
+            document.getElementById('gameScore').textContent = gameData.score;
+            document.getElementById('gameWave').textContent = gameData.wave;
+        }
+
+        function endGame() {
+            const xpEarned = Math.floor(gameData.score / 10);
+            addXP(xpEarned);
+            
+            document.getElementById('defenseOptions').innerHTML = `
+                <div style="text-align: center;">
+                    <h3>🎮 Игра завершена!</h3>
+                    <p><strong>Результат:</strong> ${gameData.score} очков</p>
+                    <p><strong>Пройдено волн:</strong> ${gameData.wave - 1}</p>
+                    <p><strong>Получено опыта:</strong> ${xpEarned} XP</p>
+                    <button class="cta-button" onclick="startGame()" style="margin-top: 20px;">
+                        🔄 Играть снова
+                    </button>
+                </div>
+            `;
+        }
+
+        // AI Assistant
+        function askAssistant() {
+            const question = document.getElementById('questionInput').value;
+            if (!question) {
+                showNotification('Введите ваш вопрос');
+                return;
+            }
+            
+            const chatContainer = document.getElementById('chatContainer');
+            
+            // Add user message
+            chatContainer.innerHTML += `
+                <div class="message user-message">
+                    <strong>Вы:</strong><br>${question}
+                </div>
+            `;
+            
+            // Find answer
+            let answer = SECURITY_KNOWLEDGE.default;
+            for (let keyword in SECURITY_KNOWLEDGE) {
+                if (question.toLowerCase().includes(keyword)) {
+                    answer = SECURITY_KNOWLEDGE[keyword];
+                    break;
+                }
+            }
+            
+            // Add bot message after delay
+            setTimeout(() => {
+                chatContainer.innerHTML += `
+                    <div class="message bot-message">
+                        <strong>Кибер-Помощник:</strong><br>${answer.replace(/\n/g, '<br>')}
+                    </div>
+                `;
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                addXP(5);
+            }, 1000);
+            
+            document.getElementById('questionInput').value = '';
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // NEWS - ОБНОВЛЯЕМЫЕ НОВОСТИ
+        const newsTemplates = [
+            {
+                titles: [
+                    "🔥 Массовые фишинг-атаки на школьные аккаунты МЭШ",
+                    "🚨 Новый вирус атакует образовательные платформы",
+                    "⚠️ Утечка данных в социальных сетях"
+                ],
+                descriptions: [
+                    "Мошенники рассылают поддельные уведомления с просьбой обновить пароли. Будьте бдительны!",
+                    "Обнаружено вредоносное ПО, маскирующееся под обучающие приложения.",
+                    "Обнаружена новая масштабная утечка данных пользователей."
+                ]
+            },
+            {
+                titles: [
+                    "🛡️ Вышло критическое обновление для Windows 11",
+                    "📱 Обновление безопасности для Android",
+                    "💻 Патч для уязвимости в браузерах"
+                ],
+                descriptions: [
+                    "Microsoft выпустила экстренный патч для уязвимости нулевого дня. Рекомендуется установить немедленно.",
+                    "Google выпустила обновление безопасности для операционной системы Android.",
+                    "Обнаружена критическая уязвимость в популярных браузерах."
+                ]
+            },
+            {
+                titles: [
+                    "🎣 Новые методы фишинговых атак",
+                    "🦠 Троян для мобильных устройств",
+                    "🌍 Глобальная кибератака на вузы"
+                ],
+                descriptions: [
+                    "Мошенники используют новые психологические приемы для обмана пользователей.",
+                    "Обнаружен новый троян, крадущий банковские данные с мобильных устройств.",
+                    "Зафиксирована масштабная атака на университеты по всему миру."
+                ]
+            }
+        ];
+
+        function loadNews() {
+            const newsContainer = document.getElementById('newsContainer');
+            
+            try {
+                newsContainer.innerHTML = '<div class="news-item">🔄 Загружаем актуальные новости...</div>';
+                
+                // Имитация загрузки
+                setTimeout(() => {
+                    // Выбираем случайный шаблон новостей
+                    const template = newsTemplates[Math.floor(Math.random() * newsTemplates.length)];
+                    
+                    let newsHTML = '';
+                    for (let i = 0; i < 4; i++) {
+                        const titleIndex = Math.floor(Math.random() * template.titles.length);
+                        const descIndex = Math.floor(Math.random() * template.descriptions.length);
+                        
+                        const sources = ["SecurityLab", "Microsoft Security", "Лаборатория Касперского", "CERT", "Роскомнадзор"];
+                        const source = sources[Math.floor(Math.random() * sources.length)];
+                        
+                        // Случайная дата за последнюю неделю
+                        const date = new Date();
+                        date.setDate(date.getDate() - Math.floor(Math.random() * 7));
+                        
+                        newsHTML += `
+                            <div class="news-item">
+                                <div class="news-title">${template.titles[titleIndex]}</div>
+                                <div class="news-summary">${template.descriptions[descIndex]}</div>
+                                <div class="news-meta">
+                                    <span>📡 ${source}</span>
+                                    <span>🕐 ${date.toLocaleDateString('ru-RU')}</span>
+                                </div>
+                            </div>
+                        `;
+                    }
+                    
+                    newsContainer.innerHTML = newsHTML;
+                    showNotification('📰 Новости обновлены!');
+                    
+                }, 1000);
+                
+            } catch (error) {
+                console.error('Error loading news:', error);
+                newsContainer.innerHTML = `
+                    <div class="news-item">
+                        <div class="news-title">❌ Ошибка загрузки новостей</div>
+                        <div class="news-summary">Попробуйте обновить страницу позже.</div>
+                    </div>
+                `;
+            }
+            
+            addXP(3);
+        }
+
+        // Other functions
+        function checkDeepfake() {
+            showNotification('🕵️ Функция детектора дипфейков в разработке');
+            addXP(5);
+        }
+
+        function checkQR() {
+            const qrContent = document.getElementById('qrInput').value;
+            if (!qrContent) {
+                showNotification('Введите содержимое QR-кода');
+                return;
+            }
+            
+            let result = "✅ БЕЗОПАСНО! QR-код не содержит угроз";
+            let resultClass = "safe";
+            
+            if (qrContent.includes('http')) {
+                // Проверяем ссылку в QR-коде
+                const isDangerous = dangerousDomains.some(domain => 
+                    qrContent.toLowerCase().includes(domain)
+                );
+                
+                if (isDangerous) {
+                    result = "🚨 ОПАСНО! QR-код содержит вредоносную ссылку";
+                    resultClass = "danger";
+                } else if (qrContent.includes('bit.ly') || qrContent.includes('tinyurl.com')) {
+                    result = "⚠️ ВНИМАНИЕ! Сокращенная ссылка. Проверьте перед переходом";
+                    resultClass = "warning";
+                }
+            }
+            
+            document.getElementById('qrResult').innerHTML = `
+                <strong>Результат проверки:</strong><br>
+                ${result}<br><br>
+                <strong>Содержимое:</strong><br>
+                <code>${qrContent}</code>
+            `;
+            document.getElementById('qrResult').className = `result-box ${resultClass}`;
+            document.getElementById('qrResult').style.display = 'block';
+            
+            addXP(8);
+        }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updateStats();
+            showNotification('🛡️ Добро пожаловать в КиберЩит!');
+            
+            // Автоматически загружаем первый квест
+            startNewQuest();
+        });
+    </script>
+</body>
+</html>
